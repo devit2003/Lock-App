@@ -1,0 +1,83 @@
+/* Aturan dasar untuk body - memastikan tinggi 100% viewport */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f2f5; /* Ganti warna latar belakang yang lebih modern */
+    margin: 0; /* Hapus margin default */
+    padding: 0;
+    /* Gunakan Flexbox untuk menengahkan container secara vertikal */
+    display: flex; 
+    justify-content: center; /* Tengahkan horizontal */
+    align-items: center; /* Tengahkan vertikal */
+    min-height: 100vh; /* Pastikan tinggi minimal 100% dari viewport height */
+    text-align: center;
+}
+
+/* Container untuk menampung semua elemen dan memberikan padding/margin */
+.container {
+    padding: 20px;
+    width: 100%; /* Ambil lebar penuh di mobile */
+    max-width: 450px; /* Batasi lebar maksimum untuk desktop */
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 25px;
+    font-size: 1.8em;
+}
+
+/* Card: Responsif di mobile dan desktop */
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px; /* Lebih halus */
+    /* Lebar diatur oleh .container, tidak perlu width: 350px di sini */
+    margin: 0 auto; /* Tengahkan kartu dalam container */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Bayangan yang lebih menonjol */
+}
+
+/* Gaya tombol */
+button {
+    padding: 15px 30px; /* Ukuran yang lebih besar, mudah disentuh di mobile */
+    background: #007bff; /* Warna biru yang umum untuk action utama */
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: background 0.3s ease; /* Transisi halus */
+    width: 100%; /* Tombol lebar penuh di dalam card */
+    box-sizing: border-box; /* Pastikan padding dihitung dalam lebar */
+}
+
+button:hover { 
+    background: #0056b3; 
+}
+
+/* Gaya untuk paragraf info */
+#info {
+    margin-top: 20px;
+    color: #555;
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+
+/* Media Query untuk penyesuaian layar kecil (mobile) */
+@media (max-width: 600px) {
+    body {
+        /* Di mobile, hapus centering vertikal jika konten panjang */
+        align-items: flex-start;
+    }
+
+    .container {
+        padding: 10px; /* Kurangi padding di layar kecil */
+    }
+
+    .card {
+        padding: 20px; /* Kurangi padding card di mobile */
+    }
+
+    h2 {
+        font-size: 1.5em; /* Kecilkan ukuran heading */
+    }
+}

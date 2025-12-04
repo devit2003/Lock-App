@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard Lokasi</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+
+<body>
+<h2>Dashboard Lokasi Teman (Realtime)</h2>
+<div id="data"></div>
+
+<script>
+const socket = io("http://localhost:3000");
+
+socket.on("update-location", (locations)=>{
+    render(locations);
+});
+
+// refresh pertama kali
+fetch("http://localhost:3000/api/locations")
+.then(r=>r.json())
+.then(data=>render(data));
+
+function render(data){
+    let html="";
+    Object.keys(data).forEach(user=>{
+        const {lat, lon, time} = data[user];
+        html += `
+        <div class="card">
+            <b>${user}</b><br>
+            Latitude: ${lat}<br>
+            Longitude: ${lon}<br>
+            Waktu: ${new Date(time).toLocaleString()}<br><br>
+            <a target="_blank" href="https://maps.google.com/?q=${lat},${lon}">
+              🔗 Buka di Google Maps
+            </a>
+        </div>`;
+    });
+    document.getElementById("data").innerHTML = html;
+}
+</script>
+</body>
+</html>
