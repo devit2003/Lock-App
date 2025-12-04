@@ -71,7 +71,5 @@ app.get("/dashboard", (req, res) => {
 // ==============================================
 
 // Start Server
-const PORT = 3000;
-server.listen(PORT, () =>
-    console.log(`Server berjalan di http://localhost:${PORT}`)
-);
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => console.log("Server berjalan pada port", PORT));
